@@ -28,10 +28,6 @@
 #include "Exif.h"
 
 namespace android {
-
-#define LEGACY_SUPPORT
-#ifdef LEGACY_SUPPORT
-
 #define MAX_JPG_WIDTH                   800
 #define MAX_JPG_HEIGHT                  480
 #define MAX_JPG_RESOLUTION              (MAX_JPG_WIDTH * MAX_JPG_HEIGHT)
@@ -70,7 +66,6 @@ namespace android {
 #define IMG_MAIN_START      (JPG_STREAM_BUF_SIZE + JPG_STREAM_THUMB_BUF_SIZE)
 #define IMG_THUMB_START     (IMG_MAIN_START + JPG_FRAME_BUF_SIZE)
 /*******************************************************************************/
-#endif
 
 #define JPG_DRIVER_NAME     "/dev/s3c-jpg"
 
@@ -83,7 +78,6 @@ namespace android {
 #define IOCTL_JPG_GET_THUMB_FRMBUF      _IO(JPEG_IOCTL_MAGIC, 6)
 #define IOCTL_JPG_GET_PHY_FRMBUF        _IO(JPEG_IOCTL_MAGIC, 7)
 #define IOCTL_JPG_GET_PHY_THUMB_FRMBUF  _IO(JPEG_IOCTL_MAGIC, 8)
-#define IOCTL_JPG_GET_INFO              _IO(JPEG_IOCTL_MAGIC, 9)
 
 typedef enum {
     JPEG_SET_ENCODE_WIDTH,
@@ -187,18 +181,6 @@ typedef struct {
     jpg_enc_proc_param  *thumb_enc_param;
 } jpg_args;
 
-typedef struct {
-    unsigned int     frame_buf_size;
-    unsigned int     thumb_frame_buf_size;
-    unsigned int     stream_buf_size;
-    unsigned int     thumb_stream_buf_size;
-    unsigned int     total_buf_size;
-    int     max_width;
-    int     max_height;
-    int     max_thumb_width;
-    int     max_thumb_height;
-} jpg_info;
-
 class JpegEncoder {
 public:
     JpegEncoder();
@@ -250,7 +232,6 @@ private:
                                  unsigned char *start);
     int mDevFd;
     jpg_args mArgs;
-    jpg_info mInfo;
 
     bool available;
 
